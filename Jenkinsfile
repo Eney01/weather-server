@@ -1,26 +1,23 @@
 pipeline {
     agent any
-    
-    environment {
-        VENV_DIR = 'venv'
-    }
 
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Eney01/weather-server.git'
+                // Перевірка гілки main
+                git branch: 'main', url: 'https://github.com/Eney01/weather-server.git'
             }
         }
 
         stage('Install Dependencies') {
             steps {
                 script {
-                    // Створюємо віртуальне середовище
-                    sh 'python3 -m venv $VENV_DIR'
+                    // Створення віртуального середовища
+                    sh 'python3 -m venv venv'
                     // Активуємо віртуальне середовище
-                    sh '. $VENV_DIR/bin/activate'
+                    sh '. venv/bin/activate'
                     // Встановлюємо залежності
-                    sh '$VENV_DIR/bin/pip install -r requirements.txt'
+                    sh 'pip install -r requirements.txt'
                 }
             }
         }
@@ -28,8 +25,8 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    // Запускаємо тести в активованому середовищі
-                    sh '$VENV_DIR/bin/pytest --disable-warnings'
+                    // Запуск тестів
+                    sh './venv/bin/pytest --disable-warnings'
                 }
             }
         }
