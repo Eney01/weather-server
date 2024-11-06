@@ -16,7 +16,7 @@ pipeline {
                     // Активуємо віртуальне середовище
                     sh '. venv/bin/activate'
                     // Переконуємось, що pip є оновленим
-                    sh 'pip install --upgrade pip'
+                    sh 'pip install --upgrade pip --break-system-packages'
                     // Встановлення залежностей
                     sh 'pip install -r requirements.txt --break-system-packages'
                 }
@@ -45,4 +45,5 @@ pipeline {
         }
     }
 }
+
 
