@@ -15,9 +15,9 @@ pipeline {
                     sh 'python3 -m venv venv'
                     // Активуємо віртуальне середовище
                     sh '. venv/bin/activate'
-                    // Переконуємось, що pip є оновленим
+                    // Оновлюємо pip
                     sh 'pip install --upgrade pip --break-system-packages'
-                    // Встановлення залежностей
+                    // Встановлюємо залежності з requirements.txt
                     sh 'pip install -r requirements.txt --break-system-packages'
                 }
             }
@@ -26,7 +26,9 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    // Запуск тестів
+                    // Переконайтеся, що віртуальне середовище активоване, і додаємо шлях до pytest у PATH
+                    sh 'export PATH=$PATH:/var/lib/jenkins/.local/bin'
+                    // Запускаємо тести
                     sh './venv/bin/pytest --disable-warnings'
                 }
             }
@@ -35,6 +37,7 @@ pipeline {
 
     post {
         always {
+            // Архівуємо результати тестів
             archiveArtifacts artifacts: '**/test-results/*.xml', allowEmptyArchive: true
         }
         success {
