@@ -1,5 +1,11 @@
+import sys
+import os
 import pytest
-from app import app  # Імпортуємо Flask додаток з файлу app.py
+
+# Додаємо корінь проекту до sys.path, щоб Python міг знайти файл app.py
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from app import app  # Тепер імпортуємо Flask додаток з файлу app.py
 
 @pytest.fixture
 def client():
@@ -13,3 +19,4 @@ def test_weather(client):
     assert "temperature" in data  # Перевіряємо, що в відповіді є температура
     assert "humidity" in data  # Перевіряємо, що в відповіді є вологість
     assert "status" in data  # Перевіряємо, що в відповіді є статус
+
