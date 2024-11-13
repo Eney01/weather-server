@@ -14,8 +14,14 @@ def generate_sensor_data():
         "pressure": pressure
     }
 
+# Оновлений кореневий маршрут для привітання
+@app.route('/')
+def index():
+    return "Ласкаво просимо до Weather Server! Перейдіть до /weather для отримання даних про погоду."
+
+# Оновлений маршрут для отримання даних про погоду
 @app.route('/weather', methods=['GET'])
-def get_weather_data():
+def weather():
     data = generate_sensor_data()
     return jsonify(data)
 
